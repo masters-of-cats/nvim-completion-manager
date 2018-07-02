@@ -148,7 +148,8 @@ class Base:
     def complete(self, name, ctx, startcol, matches, refresh=False):
         if isinstance(name,dict):
             name = name['name']
-        self.nvim.call('cm#complete', name, ctx, startcol, matches, refresh, async=True)
+        args = {'async':True}
+        self.nvim.call('cm#complete', name, ctx, startcol, matches, refresh, **args)
 
     def snippet_placeholder(self, num, txt=''):
         # TODO: this version is so simple, but I haven't met those complicated
@@ -219,7 +220,8 @@ def start_and_run_channel(channel_type, serveraddr, source_name, modulename):
                 m = importlib.reload(m)
 
         handler = m.Source(nvim)
-        nvim.call('cm#_channel_started',source_name, nvim.channel_id, async=True)
+        args = { 'async': True }
+        nvim.call('cm#_channel_started',source_name, nvim.channel_id, **args)
         logger.info('<%s> handler created, entering event loop', source_name)
 
 

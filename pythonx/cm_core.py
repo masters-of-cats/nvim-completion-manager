@@ -49,7 +49,8 @@ class CoreHandler(cm.Base):
 
         # after all sources are registered, so that all channels will be
         # started the first time cm_start_channels is called
-        self.nvim.call('cm#_core_channel_started', self.nvim.channel_id, async=True)
+        args = {'async':True}
+        self.nvim.call('cm#_core_channel_started', self.nvim.channel_id, **args)
 
         # load configurations
         self._servername = self.nvim.vars['_cm_servername']
@@ -133,7 +134,8 @@ class CoreHandler(cm.Base):
                     source[k] = kwargs[k]
 
                 logger.info('registering source: %s',source)
-                self.nvim.call('cm#register_source', source, async=True)
+                args = {'async':True}
+                self.nvim.call('cm#register_source', source, **args)
 
                 # use a trick to only register the source withou loading the entire
                 # module
@@ -375,7 +377,8 @@ class CoreHandler(cm.Base):
         else:
             logger.info('notify_sources_to_refresh calls cnt [%s], channels cnt [%s]',len(refreshes_calls),len(refreshes_channels))
             logger.debug('cm#_notify_sources_to_refresh [%s] [%s] [%s]', [e['name'] for e in refreshes_calls], [e['name'] for e in refreshes_channels], root_ctx)
-            self.nvim.call('cm#_notify_sources_to_refresh', refreshes_calls, refreshes_channels, root_ctx, async=True)
+            args = {'async':True}
+            self.nvim.call('cm#_notify_sources_to_refresh', refreshes_calls, refreshes_channels, root_ctx, **args)
 
             # complete delay timer
             def on_timeout():
